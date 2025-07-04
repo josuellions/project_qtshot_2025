@@ -1,0 +1,10 @@
+# variáveis de ambiente
+.env
+.env.development
+
+# diretórios framework
+.next
+node_modules/
+
+
+ 

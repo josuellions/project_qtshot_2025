@@ -1,0 +1,34 @@
+# @name status-conection
+GET http://localhost:3000/api/v1/status
+
+###
+
+# @name exec-simulation-migrations
+GET http://localhost:3000/api/v1/migrations
+
+###
+
+# @name exec-test-migrations
+PUT http://localhost:3000/api/v1/migrations
+
+###
+
+# @name exec-efect-migrations
+POST http://localhost:3000/api/v1/migrations
+
+###
+
+# @name count-page-access
+GET http://localhost:3000/api/v1/access
+
+###
+
+# @name count-page-access
+POST http://localhost:3000/api/v1/access
+
+##
+
+# @name count-page-access-alowed
+PUT http://localhost:3000/api/v1/access
+
+###

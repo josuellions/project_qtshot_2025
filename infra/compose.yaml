@@ -1,0 +1,9 @@
+services:
+  database:
+    # container_name: ${process.env.DOCKER_CONTAINER_NAME}
+    container_name: postgres-dev-qrshot
+    image: "postgres:16.0-alpine3.18"
+    env_file:
+      - ../.env.development
+    ports:
+      - "5432:5432"
