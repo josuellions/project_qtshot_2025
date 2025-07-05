@@ -2,7 +2,7 @@
 
 ### Processo seletivo vaga Developer
 
-##### Data: 01/07/2025 a 03/07/2025
+##### Data: 02/07/2025 a 03/07/2025
 
 ##### Developer: Josuel A. Lopes
 
@@ -23,7 +23,7 @@ Desenvolvimento de uma aplicação interage com uma tela (touchscreen ou celular
 
 #### Projeto: PhotoOpp (QRShot)
 
-- Link projeto: https://project-qtshot-2025-qv0idqrg0-josuellions-projects.vercel.app/
+- Link projeto: https://project-qtshot-2025.vercel.app/
 
 </br>
 
