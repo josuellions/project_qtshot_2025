@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Header from "@/components/ui/header";
@@ -9,14 +8,14 @@ import Body from "@/components/ui/body";
 
 export default function QRCode() {
   const router = useRouter();
-  const [photo, setPhoto] = useState<string | null>(null);
+  //const [photo, setPhoto] = useState<string | null>(null);
   //const [isModal, setIsModal] = useState<boolean>(false);
 
   const handlerQRCode = () => {
     // setIsModal(true);
     // setTimeout(
     //   () => {
-    setPhoto(null);
+    //setPhoto(null);
     //startCamera();
     //setIsModal(true);
     router.push("/");
@@ -25,12 +24,12 @@ export default function QRCode() {
     // );
   };
 
-  useEffect(() => {
-    const getPhoto = localStorage.getItem("photo-opp");
-    if (getPhoto) {
-      setPhoto(getPhoto);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const getPhoto = localStorage.getItem("photo-opp");
+  //   if (getPhoto) {
+  //     setPhoto(getPhoto);
+  //   }
+  // }, []);
 
   return (
     <>

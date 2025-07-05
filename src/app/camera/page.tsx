@@ -10,7 +10,7 @@ export default function Camera() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [photo, setPhoto] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  //const [error, setError] = useState<string | null>(null);
 
   const startCamera = useCallback(async () => {
     try {
@@ -27,12 +27,12 @@ export default function Camera() {
         videoRef.current.srcObject = stream;
       }
     } catch (err) {
-      setError("É necessário permissão de acesso a câmera.");
+      //setError("É necessário permissão de acesso a câmera.");
       console.log(err);
     }
   }, []);
 
-  const handlerCapture = useCallback(async () => {
+  const handlerCapture = useCallback(() => {
     const photo = videoRef.current;
     const canvas = canvasRef.current;
 
@@ -48,13 +48,13 @@ export default function Camera() {
       if (ctx) {
         ctx.drawImage(photo, 0, 0, width, height);
         const imgData = canvas.toDataURL("image/png");
-        console.log(imgData);
+
         setPhoto(imgData);
         localStorage.setItem("photo-opp", imgData);
         router.push("/photo");
       }
     }
-  }, []);
+  }, [router]);
 
   // const handlerCaptureClear = () => {
   //   setPhoto(null);
@@ -63,11 +63,11 @@ export default function Camera() {
 
   useEffect(() => {
     startCamera();
-  }, []);
+  });
 
   return (
     <>
-      <div className="flex flex-col w-full h-full aspect-[9/16] items-center justify-end ">
+      <div className="flex flex-col w-full h-full aspect-[9/16] items-center justify-end">
         {photo ? (
           <Image
             className="w-360px shadow-lg"
@@ -80,7 +80,7 @@ export default function Camera() {
         ) : (
           <>
             <video
-              className="absolute flex flex-col object-cover z-0 left-0 top-0   w-full h-full max-w-md shadow-md"
+              className="md:relative absolute flex flex-col object-cover z-0 left-0 top-0 w-full h-full max-w-md shadow-md"
               ref={videoRef}
               muted
               autoPlay
