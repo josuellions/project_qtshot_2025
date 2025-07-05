@@ -1,48 +1,38 @@
+"use client";
+
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import photo_opp from "../../../assets/img/photo_opp.png";
-import logo from "../../../assets/img/logo.png";
+import Header from "@/components/ui/header";
+import Button from "@/components/ui/button";
+import Body from "@/components/ui/body";
 
 export default function Home() {
+  const router = useRouter();
+
   return (
-    <div className="flex flex-col md:max-w-[1024px] justify-center items-center min-h-screen grid-4 gap-24">
-      <header className="flex h-full w-full justify-center items-start">
-        <div className="center">
-          <div className="logo">
-            <Image src={logo} alt="logo NEX.lab" width={120} height={62} />
-          </div>
+    <>
+      <Header className="justify-center" />
 
-          {/* <nav>
-            <a href="#" className="active bg-gray-800">
-              Logs
-            </a>
-          </nav> */}
-        </div>
-      </header>
-
-      <section className="flex w-full h-full mt-16 mb-16">
-        <div className="center">
-          <Image src={photo_opp} alt="Photo Opp" />
-        </div>
-      </section>
+      <Body className="p-12">
+        <Image src={photo_opp} alt="Photo Opp" />
+      </Body>
 
       <div className="flex w-full">
-        {/* <button className="flex bg-stone-500 h-12 w-full text-stone-100 font-bold justify-center items-center">
-          Iniciar
-        </button> */}
-        <Link
-          className="flex bg-stone-500 h-12 w-full text-stone-100 font-bold justify-center items-center"
-          href={"/photo"}
+        <Button
+          className=" bg-stone-500 text-stone-100"
+          onClick={() => router.push("/camera")}
         >
           Iniciar
-        </Link>
+        </Button>
       </div>
-      <footer className="flex w-full justify-center ">
+
+      <footer className="flex w-full justify-center mt-4">
         <p>
-          <small>&#174; 2025 - v0.0.1</small>
+          <small>&#174; {new Date().getFullYear()} - v0.0.1</small>
         </p>
       </footer>
-    </div>
+    </>
   );
 }

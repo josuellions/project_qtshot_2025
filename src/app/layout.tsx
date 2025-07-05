@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Titillium_Web } from "next/font/google";
-import "./globals.css";
+import "./styles/globals.css";
 
 // Configure a fonte com pesos e subset
 const titillium = Titillium_Web({
@@ -22,9 +22,9 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body
-        className={`${titillium.variable} bg-gradient-to-b from-stone-50 via-stone-100 to-stone-300 text-gray-900`}
+        className={`${titillium.variable} bg-gradient-to-br from-stone-100 via-stone-100 to-stone-400 text-gray-900`}
       >
-        <main className="flex flex-col justify-center items-center min-h-screen p-10 w-full">
+        <main className="flex flex-col w-full md:max-w-[1024px] h-screen min-h-screen justify-center items-center p-5">
           {children}
         </main>
       </body>
