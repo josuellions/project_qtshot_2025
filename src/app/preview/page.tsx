@@ -2,15 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Loader } from "lucide-react";
+
 import Image from "next/image";
 import Header from "@/components/ui/header";
 import Body from "@/components/ui/body";
 import Button from "@/components/ui/button";
-import { Loader } from "lucide-react";
 
 export default function Preview() {
   const router = useRouter();
-  const [photo, setPhoto] = useState<string | null>(null);
+  const [photo, setPhoto] = useState<any | null>(null);
   const [isModal, setIsModal] = useState<boolean>(false);
 
   const handlerQRCode = () => {
@@ -27,8 +28,9 @@ export default function Preview() {
 
   useEffect(() => {
     const getPhoto = localStorage.getItem("photo-opp");
+
     if (getPhoto) {
-      setPhoto(getPhoto);
+      setPhoto(JSON.parse(getPhoto));
     }
   }, []);
 
@@ -43,19 +45,29 @@ export default function Preview() {
               className="w-[360px] shadow-lg object-cover z-0 relative"
               unoptimized
               fill
-              src={photo} // base64
+              src={`${photo?.url_image}`}
               alt="Foto capturada"
             />
           ) : (
-            <div className="w-full h-full max-w-md shadow-md"></div>
+            <div className="w-full h-full max-w-md shadow-md">
+              <p className="text-stone-100 font-semibold">Preview Foto</p>
+            </div>
           )}
-          <div className="flex flex-col w-36 h-44 relative z-10 bg-stone-200 rounded-md mr-4 mb-4 items-end justify-end">
-            <div className="flex w-full">
+          <div className="flex flex-col w-40 h-52 relative z-10 bg-stone-200 rounded-md mr-4 mb-4 items-center justify-center">
+            <div className="relative flex flex-col w-full justify-center items-start">
               <p className="text-start p-2">
                 <small>Fazer download</small>
               </p>
             </div>
-            <div className="flex w-28 h-32 bg-stone-50 rounded-md mr-4 mb-4"></div>
+            <div className="relative flex flex-col max-w-32 max-h-40 w-32 h-40 bg-stone-50 rounded-md  mb-4 justify-center items-center">
+              <Image
+                className="w-32 h-40 max-w-32 max-h-40 shadow-lg object-contain z-0 justify-center items-center"
+                unoptimized
+                fill
+                src={`${photo?.url_qrcode}`}
+                alt="QRCode"
+              />
+            </div>
           </div>
         </div>
         <div className="flex flex-col w-full max-h-12 h-12 p-1 bg-stone-200 border-2 border-stone-500 text-center justify-center">

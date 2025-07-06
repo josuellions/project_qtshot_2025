@@ -48,7 +48,8 @@ export default function Camera() {
       if (ctx) {
         ctx.drawImage(photo, 0, 0, width, height);
         const imgData = canvas.toDataURL("image/png");
-
+        // console.log(">>CAMERA");
+        // console.log(imgData);
         setPhoto(imgData);
         localStorage.setItem("photo-opp", imgData);
         router.push("/photo");
