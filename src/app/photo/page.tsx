@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
@@ -10,34 +10,25 @@ import Body from "@/components/ui/body";
 
 export default function Photo() {
   const router = useRouter();
-  const videoRef = useRef<HTMLVideoElement>(null);
+  // const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [photo, setPhoto] = useState<string | null>(null);
+  // const [qrCode, setqrCode] = useState<string | null>(null);
 
-  const handlerCapture = useCallback(async () => {
-    const photo = videoRef.current;
-    const canvas = canvasRef.current;
+  const fetchQRCode = async () => {
+    const res = await fetch(`api/v1/qrcode`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ image: photo }),
+    });
 
-    if (photo && canvas) {
-      const width = photo.videoWidth;
-      const height = photo.videoHeight;
+    const data = await res.json();
 
-      canvas.width = width;
-      canvas.height = height;
+    // setqrCode(data.qrCodeURL);
+    await localStorage.setItem("photo-opp", JSON.stringify(data));
 
-      const ctx = canvas.getContext("2d");
-
-      if (ctx) {
-        ctx.drawImage(photo, 0, 0, width, height);
-        const imgData = canvas.toDataURL("image/png");
-        console.log(imgData);
-        setPhoto(imgData);
-        localStorage.setItem("photo-opp", imgData);
-        //router.push("/qrcode");
-        //setPhoto(ph.src);
-      }
-    }
-  }, []);
+    await router.push("/preview");
+  };
 
   const handlerCaptureClear = () => {
     setPhoto(null);
@@ -46,6 +37,7 @@ export default function Photo() {
 
   useEffect(() => {
     const getPhoto = localStorage.getItem("photo-opp");
+
     if (getPhoto) {
       setPhoto(getPhoto);
     }
@@ -66,18 +58,7 @@ export default function Photo() {
               alt="Foto capturada"
             />
           ) : (
-            <button
-              className="flex w-full h-full max-w-md shadow-md justify-center items-center"
-              onClick={handlerCapture}
-            >
-              <video
-                className="w-full h-full max-w-md shadow-md"
-                ref={videoRef}
-                muted
-                autoPlay
-                playsInline
-              />
-            </button>
+            "Captura Foto"
           )}
           <canvas ref={canvasRef} className="hidden" />
         </div>
@@ -93,10 +74,7 @@ export default function Photo() {
           Refazer
         </Button>
 
-        <Button
-          className="bg-stone-500 text-stone-100 "
-          onClick={() => router.push("/preview")}
-        >
+        <Button className="bg-stone-500 text-stone-100 " onClick={fetchQRCode}>
           Continuar
         </Button>
       </div>
