@@ -38,6 +38,7 @@
     "node-pg-migrate": "7.7.1",
     "nookies": "2.5.2",
     "pg": "8.13.1",
+    "qrcode": "^1.5.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "typescript": "5.8.3"
