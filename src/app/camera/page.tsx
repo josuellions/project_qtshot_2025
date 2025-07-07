@@ -18,8 +18,8 @@ export default function Camera() {
       const newStream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: "environment",
-          width: { ideal: 1080 },
-          height: { ideal: 1920 },
+          width: { ideal: 900 }, //1080
+          height: { ideal: 1600 }, //1920
         },
         audio: false,
       });
