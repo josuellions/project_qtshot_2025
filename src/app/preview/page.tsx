@@ -41,7 +41,7 @@ export default function Preview() {
         <div className="relative flex flex-col bg-stone-50 w-full h-full aspect-[9/16] items-end justify-end">
           {photo ? (
             <Image
-              className="w-[360px] shadow-lg object-cover z-0 relative"
+              className="w-[360px] h-full shadow-lg object-cover z-0 relative"
               unoptimized
               fill
               src={`${photo?.url_image}`}

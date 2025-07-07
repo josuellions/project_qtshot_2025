@@ -1,7 +1,9 @@
 import { randomUUID } from "node:crypto";
-import { resolve } from "node:path";
+//import { resolve } from "node:path";
 import QRCode from "qrcode";
-import fs from "fs";
+//import fs from "fs";
+
+import database from "../../../../../infra/database";
 
 const status = {
   create: 201,
@@ -46,6 +48,7 @@ function requestValidation(req, res) {
   }
 }
 
+/*
 async function uploadImage(req, filename) {
   const { image } = req.body;
   const imagemMatch = image.match(/^data:image\/png;base64,(.+)$/);
@@ -65,7 +68,9 @@ async function uploadImage(req, filename) {
 
   return fullImageURL;
 }
+*/
 
+/*
 async function generateQRCode(req, filename, fullURL) {
   const qrCodePath = resolve("public", "uploads", "qrcodes", filename);
   await QRCode.toFile(qrCodePath, fullURL, {
@@ -80,7 +85,8 @@ async function generateQRCode(req, filename, fullURL) {
   );
 
   return fullqrCodeURL;
-}
+} 
+*/
 
 function generateFileName() {
   const id = randomUUID();
@@ -91,13 +97,28 @@ function generateFileName() {
   return filename;
 }
 
+/*
 function generateFullURL(origin, directory, filename) {
   const directoryURL = `/uploads/${directory}/${filename}`;
   const fullURL = `${origin}${directoryURL}`;
 
   return { url: directoryURL, fullURL: fullURL };
 }
+*/
 
+async function createParticipant(fileName, imageBase64, qrcodeBase64) {
+  const date = new Date().toLocaleString("pt-BR");
+  const participant = await database.query({
+    text: `INSERT INTO participants (dateAt, dateUp, filename, imageBase64, qrcodeBase64) 
+    VALUES($1, $2, $3, $4, $5 ) RETURNING *`,
+    values: [date, date, fileName, imageBase64, qrcodeBase64],
+  });
+
+  return participant.rows[0];
+}
+
+//FUNCIONADO SALVAr LOCAL
+/*
 export default async function handlerQRCode(req, res) {
   await requestValidation(req, res);
 
@@ -116,6 +137,43 @@ export default async function handlerQRCode(req, res) {
   return res.status(status.success).json({
     url_image: fullImageURL.url,
     url_qrcode: fullqrCodeURL.url,
+  });
+}
+*/
+/*
+async function handlerQRCodeBase64(imagemBase64) {
+  const qrCodeBase64 = await QRCode.toDataURL(imagemBase64, {
+    errorCorrectionLevel: "H",
+    type: "image/png",
+    width: 300,
+    margin: 2,
+  });
+
+  return qrCodeBase64;
+}
+*/
+
+export default async function handlerQRCode(req, res) {
+  await requestValidation(req, res);
+
+  const filename = await generateFileName();
+
+  //const fullImageURL = await uploadImage(req, filename);
+
+  const { image } = req.body;
+  const imagemMatch = image.match(/^data:image\/png;base64,(.+)$/);
+  const base64Data = imagemMatch[1];
+
+  const participant = await createParticipant(filename, image, base64Data);
+  //console.log(participant.imagebase64);
+  //const qRCodeBase64 = handlerQRCodeBase64(image)
+
+  const imageURL = `${process.env.BASE_API_URL}/image?id=${participant.id}`;
+  const qrCodeBase64 = await QRCode.toDataURL(imageURL);
+
+  return res.status(status.success).json({
+    url_image: participant.imagebase64,
+    url_qrcode: qrCodeBase64,
   });
 }
 
