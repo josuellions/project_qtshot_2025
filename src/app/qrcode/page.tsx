@@ -1,21 +1,23 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Header from "@/components/ui/header";
 import Button from "@/components/ui/button";
 import Body from "@/components/ui/body";
+import Image from "next/image";
 
 export default function QRCode() {
   const router = useRouter();
-  //const [photo, setPhoto] = useState<string | null>(null);
+  const [photo, setPhoto] = useState<any | null>(null);
   //const [isModal, setIsModal] = useState<boolean>(false);
 
   const handlerQRCode = () => {
     // setIsModal(true);
     // setTimeout(
     //   () => {
-    //setPhoto(null);
+    setPhoto(null);
     //startCamera();
     //setIsModal(true);
     router.push("/");
@@ -24,12 +26,12 @@ export default function QRCode() {
     // );
   };
 
-  // useEffect(() => {
-  //   const getPhoto = localStorage.getItem("photo-opp");
-  //   if (getPhoto) {
-  //     setPhoto(getPhoto);
-  //   }
-  // }, []);
+  useEffect(() => {
+    const getPhoto = localStorage.getItem("photo-opp");
+    if (getPhoto) {
+      setPhoto(JSON.parse(getPhoto));
+    }
+  }, []);
 
   return (
     <>
@@ -44,8 +46,18 @@ export default function QRCode() {
           </p>
         </div>
         <div className="flex flex-col w-full h-1/2 py-4 px-10 items-end justify-end ">
-          <div className="flex w-full h-screen bg-stone-50 border-2 border-stone-600 rounded-2xl  justify-center items-center">
-            QRCODE
+          <div className="relative flex w-full h-screen bg-stone-50 border-2 border-stone-600 rounded-2xl  justify-center items-center">
+            {photo ? (
+              <Image
+                className="w-full h-full shadow-lg object-contain z-0 justify-center items-center"
+                fill
+                unoptimized
+                src={`${photo?.url_qrcode}`}
+                alt="QRCode"
+              />
+            ) : (
+              <p>QRCODE</p>
+            )}
           </div>
         </div>
       </Body>

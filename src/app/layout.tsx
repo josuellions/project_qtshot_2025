@@ -22,6 +22,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+      />
       <body
         className={`${titillium.variable}  md:flex xl:flex-col  md:justify-center md:items-center bg-gradient-to-br from-stone-100 via-stone-100 to-stone-400 text-gray-900`}
       >

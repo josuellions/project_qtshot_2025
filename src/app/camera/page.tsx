@@ -11,28 +11,29 @@ export default function Camera() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [photo, setPhoto] = useState<string | null>(null);
   //const [error, setError] = useState<string | null>(null);
+  const [stream, setStream] = useState<MediaStream | null>(null);
 
-  const startCamera = useCallback(async () => {
+  const startCamera = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
+      const newStream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: "environment",
-          width: { ideal: 1080 },
-          height: { ideal: 1920 },
+          width: { ideal: 900 }, //1080
+          height: { ideal: 1600 }, //1920
         },
         audio: false,
       });
-
+      setStream(newStream);
       if (videoRef.current) {
-        videoRef.current.srcObject = stream;
+        videoRef.current.srcObject = newStream;
       }
     } catch (err) {
       //setError("É necessário permissão de acesso a câmera.");
       console.log(err);
     }
-  }, []);
+  };
 
-  const handlerCapture = useCallback(() => {
+  const handlerCapture = () => {
     const photo = videoRef.current;
     const canvas = canvasRef.current;
 
@@ -48,29 +49,43 @@ export default function Camera() {
       if (ctx) {
         ctx.drawImage(photo, 0, 0, width, height);
         const imgData = canvas.toDataURL("image/png");
-
+        // console.log(">>CAMERA");
+        // console.log(imgData);
         setPhoto(imgData);
         localStorage.setItem("photo-opp", imgData);
-        router.push("/photo");
+
+        handlerStopCapture();
+
+        setTimeout(() => {
+          router.push("/photo");
+        }, 300);
       }
     }
-  }, [router]);
+  };
 
-  // const handlerCaptureClear = () => {
-  //   setPhoto(null);
-  //   startCamera();
-  // };
+  const handlerStopCapture = useCallback(() => {
+    if (stream) {
+      stream?.getTracks().forEach((track) => track.stop());
+      setStream(null);
+    }
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     startCamera();
-  });
+
+    return () => handlerStopCapture();
+  }, [handlerStopCapture]);
 
   return (
     <>
       <div className="flex flex-col w-full h-full aspect-[9/16] items-center justify-end">
         {photo ? (
           <Image
-            className="w-360px shadow-lg"
+            className="md:relative absolute w-full h-screen shadow-md object-cover z-0 left-0 top-0"
             unoptimized
             width={360}
             height={640}
@@ -86,6 +101,11 @@ export default function Camera() {
               autoPlay
               playsInline
             />
+            <canvas
+              ref={canvasRef}
+              className="hidden w-full h-full aspect-[9/16] z-0"
+              hidden
+            />
             <Button
               className="absolute max-w-24 max-h-32 min-w-24 min-h-24 z-10 rounded-full mb-4 border-8 border-stone-300 bg-stone-100 shadow-md"
               onClick={handlerCapture}
@@ -94,7 +114,7 @@ export default function Camera() {
             </Button>
           </>
         )}
-        <canvas ref={canvasRef} className="hidden" />
+        <div className="hidden relative" hidden></div>
       </div>
     </>
   );
