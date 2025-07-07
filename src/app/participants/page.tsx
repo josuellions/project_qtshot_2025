@@ -1,0 +1,99 @@
+"use client";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+
+import Body from "@/components/ui/body";
+import Button from "@/components/ui/button";
+import Header from "@/components/ui/header";
+import { CheckCircle2 } from "lucide-react";
+
+export default function Participants() {
+  const [data, setData] = useState<any>({});
+  const router = useRouter();
+
+  async function fetchParticipants() {
+    const res: any = await fetch(`api/v1/participants`);
+    const resultJson = await res.json();
+    console.log(resultJson.events);
+    setData(resultJson);
+  }
+
+  useEffect(() => {
+    fetchParticipants();
+  }, []);
+
+  return (
+    <>
+      <Header className="items-start bg-stone-200 border-2 border-stone-400" />
+
+      <Body className="relative pb-8">
+        <div className="flex flex-col gap-8 p-10 overflow-y-scroll">
+          <h1 className="text-center text-2xl capitalize font-semibold text-stone-700">
+            Participantes
+          </h1>
+
+          {data.events &&
+            Object.entries(data.events).map(([date, participants]: any) => (
+              <div key={date}>
+                <h3 className="font-medium pb-1">
+                  <span className="capitalize flex flex-row item-center  h-8 min-h-8 gap-1">
+                    <span className="flex flex-row -mt-1 w-8 h-8 min-w-8 min-h-8 justify-center items-center text-xl bg-stone-500 text-stone-100 p-1 rounded-full">
+                      {" "}
+                      {participants.total_participants}
+                    </span>{" "}
+                    - {date}
+                  </span>
+                </h3>
+
+                {/* <pre className="text-xs p-10 ml-24">
+                    {JSON.stringify(participants.participants, null, 2)}
+                  </pre> */}
+
+                <ul className="flex flex-col gap-3">
+                  {participants?.participants.map((participant: any) => (
+                    <li
+                      key={participant.date_at}
+                      className="flex items-center gap-2 bg-gray-200 p-2 rounded-md cursor-pointer"
+                    >
+                      <CheckCircle2 className="size-4 text-green-500" />
+                      <span className="flex flex-row gap-2 text-sm text-zinc-400 items-center">
+                        <span className="relative flex flex-row -mt-1 w-8 h-8 min-w-8 min-h-8 justify-center items-center text-xl bg-stone-500 text-stone-100 p-1 rounded-full">
+                          <Image
+                            fill
+                            unoptimized
+                            alt="Foto participante"
+                            src={participant.image_base64}
+                            className="w-8 h-8 max-w-8 max-h-8 rounded-full overflow-hidden absolute"
+                          />
+                        </span>{" "}
+                        <span className="flex flex-row items-center -mt-2">
+                          <Link
+                            href={participant.image_url}
+                            className="text-2xl font-bold hover:underline hover:decoration-1 hover:text-underline-offset-4 underline decoration-2 text-underline-offset-4"
+                          >
+                            <small className="text-xs text-gray-700 ">
+                              click para acesse a foto do evento{" "}
+                            </small>
+                          </Link>
+                        </span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+        </div>
+      </Body>
+      <div className="flex w-full flex-row gap-4">
+        <Button
+          className="bg-stone-500 text-stone-100 "
+          onClick={() => router.push("/")}
+        >
+          Inicio
+        </Button>
+      </div>
+    </>
+  );
+}

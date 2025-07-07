@@ -20,7 +20,7 @@ export default function QRCode() {
     setPhoto(null);
     //startCamera();
     //setIsModal(true);
-    router.push("/");
+    router.push("/participants");
     //   },
     //   60 * 60 * 2,
     // );
