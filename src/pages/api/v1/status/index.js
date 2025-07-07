@@ -1,7 +1,6 @@
 import database from "../../../../../infra/database";
 
 async function status(_, res) {
-  console.log(">>TEST");
   const updateAt = new Date().toISOString();
   const databaseVersion = await database.query("SHOW server_version;");
   const databaseVersionValue =
@@ -18,7 +17,7 @@ async function status(_, res) {
 
   res.status(200).json({
     update_at: updateAt,
-    dependecies: {
+    dependencies: {
       database: {
         version: databaseVersionValue,
         max_connections: parseInt(databaseConnectionsValue),

@@ -18,6 +18,8 @@ async function testLogExec(action) {
         `Attempt: ${tryNumber}x | HTTP error status: ${response.status} \n`,
       );
 
+      console.log(response.status);
+
       if (response.status !== statusCode.SUCCESS) {
         throw Error();
       }

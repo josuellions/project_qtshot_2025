@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Loader } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -16,7 +17,7 @@ export default function Participants() {
   async function fetchParticipants() {
     const res: any = await fetch(`api/v1/participants`);
     const resultJson = await res.json();
-    console.log(resultJson.events);
+
     setData(resultJson);
   }
 
@@ -34,6 +35,10 @@ export default function Participants() {
             Participantes
           </h1>
 
+          {!data.events && (
+            <Loader className="animate-spin w-32 h-32 text-stone-400" />
+          )}
+
           {data.events &&
             Object.entries(data.events).map(([date, participants]: any) => (
               <div key={date}>
@@ -43,7 +48,7 @@ export default function Participants() {
                       {" "}
                       {participants.total_participants}
                     </span>{" "}
-                    - {date}
+                    - {new Date(participants.date).toLocaleDateString("pt-BR")}
                   </span>
                 </h3>
 
@@ -70,6 +75,7 @@ export default function Participants() {
                         </span>{" "}
                         <span className="flex flex-row items-center -mt-2">
                           <Link
+                            target="_blank"
                             href={participant.image_url}
                             className="text-2xl font-bold hover:underline hover:decoration-1 hover:text-underline-offset-4 underline decoration-2 text-underline-offset-4"
                           >
