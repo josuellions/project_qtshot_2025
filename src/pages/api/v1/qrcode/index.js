@@ -154,6 +154,7 @@ async function handlerQRCodeDataBase(req, res) {
 
   const { image } = req.body;
   const imagemMatch = image.match(/^data:image\/png;base64,(.+)$/);
+
   const base64Data = imagemMatch[1];
 
   const participant = await createParticipant(filename, image, base64Data);
