@@ -33,7 +33,7 @@ async function SaveCountJson(getCount) {
 async function GetCountJson() {
   try {
     if (!fs.existsSync(`${dirPath}/access_count.json`)) {
-      console.log(dirPath);
+      //console.log(dirPath);
       return {
         info: {
           update_at: dirPath,
