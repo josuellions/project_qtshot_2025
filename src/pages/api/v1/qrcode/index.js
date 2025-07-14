@@ -100,7 +100,7 @@ function generateFullURL(origin, directory, filename) {
 }
 
 async function createParticipant(fileName, imageBase64, qrcodeBase64) {
-  const date = new Date().toLocaleString("pt-BR");
+  const date = new Date().toISOString();
   const participant = await database.query({
     text: `INSERT INTO participants (dateAt, dateUp, filename, imageBase64, qrcodeBase64) 
     VALUES($1, $2, $3, $4, $5 ) RETURNING *`,
@@ -111,14 +111,14 @@ async function createParticipant(fileName, imageBase64, qrcodeBase64) {
 }
 
 async function handlerQRCodeLocal(req, res) {
-  console.log(">> SAVE IMG LOCAL");
+  // console.log(">> SAVE IMG LOCAL");
   await requestValidation(req, res);
 
   const filename = await generateFileName();
 
   const fullImageURL = await uploadImage(req, filename);
 
-  console.log(fullImageURL);
+  // console.log(fullImageURL);
 
   const fullqrCodeURL = await generateQRCode(
     req,
