@@ -1,7 +1,7 @@
 function formatDate(dateStr: string) {
   const date = new Date(dateStr);
 
-  const dia = date.getDate().toString().padStart(2, "0");
+  const dia = date.getDate().toLocaleString().padStart(2, "0");
   const mes = date.toLocaleDateString("pt-BR", { month: "short" });
   const ano = date.getFullYear();
   const diaSemana = date.toLocaleDateString("pt-BR", { weekday: "long" });
@@ -13,31 +13,31 @@ function formatDate(dateStr: string) {
 //   return str.charAt(0).toUpperCase() + str.slice(1);
 // }
 
-function formatDateExtensive(date: string) {
-  const convertDate = new Date(date);
+function formatDateExtensive(dateStr: string): string {
+  const [year, month, day] = dateStr.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
 
   const formatter = new Intl.DateTimeFormat("pt-BR", {
-    //weekday: "long",
     day: "2-digit",
     month: "long",
     year: "numeric",
   });
-
-  const formattedDate = formatter.format(convertDate);
+  const formattedDate = formatter.format(date);
 
   const result = formattedDate.replace(/\bDe\b/g, "de");
 
   return result;
 }
 
-function formatDateDayOfTheWeek(date: string) {
-  const convertDate = new Date(date);
+function formatDateDayOfTheWeek(dateStr: string): string {
+  const [year, month, day] = dateStr.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
 
   const formatter = new Intl.DateTimeFormat("pt-BR", {
     weekday: "long",
   });
 
-  return formatter.format(convertDate);
+  return formatter.format(date);
 }
 
 export { formatDate, formatDateExtensive, formatDateDayOfTheWeek };
