@@ -48,7 +48,7 @@ export default function Participants() {
                       {" "}
                       {participants.total_participants}
                     </span>{" "}
-                    - {new Date(participants.date).toLocaleDateString("pt-BR")}
+                    - {new Date(participants.date).toLocaleString("pt-BR")}
                   </span>
                 </h3>
 
