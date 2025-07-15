@@ -31,7 +31,7 @@ FROM (
   `;
 
   const events = await database.query(query);
-  console.log(events.rows[0]);
+  // console.log(events.rows[0]);
 
   return res.status(200).json(events.rows[0]);
 }
