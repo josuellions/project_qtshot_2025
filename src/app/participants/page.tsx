@@ -39,7 +39,7 @@ export default function Participants() {
           </h1>
 
           {!data.events && (
-            <div className="flex flex-col h-screen items-center justify-center">
+            <div className="flex flex-col max-h-[62vh] h-[62vh] items-center justify-center">
               <Loader className="animate-spin w-32 h-32 text-stone-400" />
             </div>
           )}
