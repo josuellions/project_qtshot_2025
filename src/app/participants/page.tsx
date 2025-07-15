@@ -8,7 +8,10 @@ import Link from "next/link";
 import Body from "@/components/ui/body";
 import Button from "@/components/ui/button";
 import Header from "@/components/ui/header";
-import { CheckCircle2 } from "lucide-react";
+import {
+  formatDateDayOfTheWeek,
+  formatDateExtensive,
+} from "@/utils/format-date";
 
 export default function Participants() {
   const [data, setData] = useState<any>({});
@@ -29,26 +32,35 @@ export default function Participants() {
     <>
       <Header className="items-start bg-stone-200 border-2 border-stone-400" />
 
-      <Body className="relative pb-8">
+      <Body className="flex flex-col justify-start relative pb-8">
         <div className="flex flex-col gap-8 p-10 overflow-y-scroll">
           <h1 className="text-center text-2xl capitalize font-semibold text-stone-700">
             Participantes
           </h1>
 
           {!data.events && (
-            <Loader className="animate-spin w-32 h-32 text-stone-400" />
+            <div className="flex flex-col h-screen items-center justify-center">
+              <Loader className="animate-spin w-32 h-32 text-stone-400" />
+            </div>
           )}
 
           {data.events &&
             Object.entries(data.events).map(([date, participants]: any) => (
               <div key={date}>
-                <h3 className="font-medium pb-1">
-                  <span className="capitalize flex flex-row item-center  h-8 min-h-8 gap-1">
-                    <span className="flex flex-row -mt-1 w-8 h-8 min-w-8 min-h-8 justify-center items-center text-xl bg-stone-500 text-stone-100 p-1 rounded-full">
-                      {" "}
+                <h3 className="font-medium pb-1 flex flex-row items-center">
+                  <span className="capitalize flex flex-row item-center h-8 min-h-8 gap-2 mb-2">
+                    <span className="flex flex-row  ml-2 w-8 h-8 min-w-8 min-h-8 justify-center items-center text-xl bg-stone-500 text-stone-100 p-1 rounded-full">
                       {participants.total_participants}
-                    </span>{" "}
-                    - {new Date(participants.date).toLocaleString("pt-BR")}
+                    </span>
+                    <span className="flex flex-col">
+                      {/* {new Date(participants.date).toLocaleDateString("pt-BR")} */}
+                      <span className="font-semibold text-sm">
+                        {formatDateDayOfTheWeek(participants.date)}
+                      </span>
+                      <span className="text-xs capitalize font-light -mt-1">
+                        <small>{formatDateExtensive(participants.date)}</small>
+                      </span>
+                    </span>
                   </span>
                 </h3>
 
@@ -62,7 +74,6 @@ export default function Participants() {
                       key={participant.date_at}
                       className="flex items-center gap-2 bg-gray-200 p-2 rounded-md cursor-pointer"
                     >
-                      <CheckCircle2 className="size-4 text-green-500" />
                       <span className="flex flex-row gap-2 text-sm text-zinc-400 items-center">
                         <span className="relative flex flex-row -mt-1 w-8 h-8 min-w-8 min-h-8 justify-center items-center text-xl bg-stone-500 text-stone-100 p-1 rounded-full">
                           <Image
