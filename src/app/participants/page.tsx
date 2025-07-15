@@ -55,10 +55,10 @@ export default function Participants() {
                     <span className="flex flex-col">
                       {/* {new Date(participants.date).toLocaleDateString("pt-BR")} */}
                       <span className="font-semibold text-sm">
-                        {formatDateDayOfTheWeek(participants.date)}
+                        {formatDateDayOfTheWeek(date)}
                       </span>
                       <span className="text-xs capitalize font-light -mt-1">
-                        <small>{formatDateExtensive(participants.date)}</small>
+                        <small>{formatDateExtensive(date)}</small>
                       </span>
                     </span>
                   </span>
